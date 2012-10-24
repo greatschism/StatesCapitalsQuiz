@@ -34,6 +34,9 @@
 	   width: 200,
 	   height: 200
 	});
+	bCapitalsQuiz.addEventListener('click', function(e) {
+		c.windows.capitals.open();
+	});
 	winMain.add(bCapitalsQuiz);
 	
 	var bSettings = Titanium.UI.createButton({

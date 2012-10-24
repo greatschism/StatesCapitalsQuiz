@@ -1,3 +1,7 @@
+var regions = {
+	'Southeast': ['WV','VA','KY','TN','AK','LA','MS','AL','GA','NC','SC','FL']	
+};
+
 var states = {
     "AL": {
         "name": "ALABAMA",

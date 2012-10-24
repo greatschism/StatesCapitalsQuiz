@@ -7,6 +7,7 @@ var c = {};
 	Ti.include('functions.js');
 	Ti.include('config.js');
 	Ti.include('ui.js');
+	Ti.include('capitals-quiz.js');
 	
 	//Force orientation to portrait
 	if (Ti.Platform.osname == 'android') {
