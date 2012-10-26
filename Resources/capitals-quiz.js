@@ -24,6 +24,7 @@
 	c.currentRegion = [];
 	c.currentState = {};
 	c.currentIndex = 0;
+	c.currentScore = 0;
 	c.pAnswers;
 	
 	c.windows.capitals = Titanium.UI.createWindow({  
@@ -53,10 +54,11 @@
 	
 	var askQuestion = function() {
 		c.currentIndex++;
+		hideCorrectLabel();
 		
 		if(c.currentIndex >= c.currentRegion.length) {
-			//TODO - quiz is finished
 			dbg('Finished quiz with ' + c.currentIndex + ' of ' + c.currentRegion.length);
+			showFinalScore();
 		}else {
 			c.currentState = c.currentRegion[c.currentIndex];
 			
@@ -71,12 +73,36 @@
 	};
 	
 	var startQuiz = function() {
+		c.currentScore = 0;
 		c.currentIndex = -1;
 		
 		resetQuestion();
 		resetAnswers();
 		
 		askQuestion();
+	};
+	
+	var hideCorrectLabel = function() {
+		lCorrect.visible = false;
+	};
+	
+	var correctAnswer = function() {
+		c.currentScore++;
+		lCorrect.visible = true;
+		lCorrect.color = '#0f0';
+		lCorrect.text = 'CORRECT!';
+	};
+	
+	var wrongAnswer = function() {
+		lCorrect.visible = true;
+		lCorrect.color = '#f00';
+		lCorrect.text = 'INCORRECT - The capital of ' + c.currentState.name + ' is ' + c.currentState.capital;
+	};
+	
+	var showFinalScore = function() {
+		lCorrect.visible = true;
+		lCorrect.color = '#000';
+		lCorrect.text = 'Your final score was ' + c.currentScore + ' of ' + c.currentRegion.length + ' correct';
 	};
 	
 	var randomAnswers = function() {
@@ -95,10 +121,6 @@
 				done = true;
 			}else {
 				state = getRandomState();
-				
-				if(typeof c.currentState == 'undefined') {
-					dbg('Something went wrong and c.currentState was undefined.');
-				}
 				
 				if(state.name != c.currentState.name) {
 					row = Ti.UI.createPickerRow({title: state.capital, state: state});
@@ -122,12 +144,14 @@
 			if(state.name == c.currentState.name) {
 				//correct
 				dbg("Correct! " + state.name);
+				correctAnswer();
 			}else {
 				//wrong
 				dbg("Wrong! " + state.name + " - " + c.currentState.name);
+				wrongAnswer();
 			}
 			
-			askQuestion();
+			setTimeout(askQuestion, 2000);
 		});
 		
 		c.pAnswers.add(pickerData);
@@ -149,11 +173,22 @@
 		width: Ti.UI.SIZE,
 		height: Ti.UI.SIZE,
 		color: '#900',
-		font: { fontSize:40 },
+		font: { fontSize:35 },
 		shadowColor: '#aaa',
 		shadowOffset: {x:5, y:5},
 	});
 	quizView.add(lQuestion);
+	
+	var lCorrect = Ti.UI.createLabel({
+		text: '',
+		bottom: '25%',
+		width: Ti.UI.SIZE,
+		height: Ti.UI.SIZE,
+		font: { fontSize:40 },
+		shadowColor: '#aaa',
+		shadowOffset: {x:5, y:5},
+	});
+	quizView.add(lCorrect);
 	/***************************************/
 	
 	/***************************************/
