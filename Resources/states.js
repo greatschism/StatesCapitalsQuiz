@@ -1,5 +1,5 @@
 var regions = {
-	'Southeast': ['WV','VA','KY','TN','AK','LA','MS','AL','GA','NC','SC','FL']	
+	'Southeast': ['WV','VA','KY','TN','AR','LA','MS','AL','GA','NC','SC','FL']	
 };
 
 var states = {
@@ -254,3 +254,13 @@ var states = {
         "capital": "Cheyenne"
     }
 };
+
+//Build an ordered array of states
+var statesList = [];
+(function() {
+	for(var i in states) {
+		if(states.hasOwnProperty(i)) {
+			statesList.push(states[i]);
+		}
+	}
+})();
